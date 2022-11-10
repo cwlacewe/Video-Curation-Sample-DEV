@@ -7,14 +7,15 @@ fi
 
 PLATFORM="${1:-Xeon}"
 FRAMEWORK="gst"
-REGISTRY="$4"
+IN_SOURCE="$4"
+REGISTRY="$7"
 USER="docker"
 GROUP="docker"
 
 build_docker() {
     docker_file="$1"
     shift
-    image_name="$1"
+    image_name="$1:stream"
     shift
     if test -f "$docker_file.m4"; then
         m4 -I "$(dirname $docker_file)" "$docker_file.m4" > "$docker_file"
@@ -22,7 +23,7 @@ build_docker() {
     (cd "$DIR"; docker build --network host --file="$docker_file" "$@" -t "$image_name" "$DIR" $(env | cut -f1 -d= | grep -E '_(proxy|REPO|VER)$' | sed 's/^/--build-arg /') --build-arg USER=${USER} --build-arg GROUP=${GROUP} --build-arg UID=$(id -u) --build-arg GID=$(id -g))
 
     # if REGISTRY is specified, push image to the private registry
-    if [ -n "$REGISTRY" ]; then
+    if [ "$REGISTRY" != " " ]; then
         docker tag "$image_name" "$REGISTRY$image_name"
         docker push "$REGISTRY$image_name"
     fi

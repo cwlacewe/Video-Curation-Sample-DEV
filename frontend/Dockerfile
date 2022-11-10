@@ -1,13 +1,13 @@
 
-FROM openvisualcloud/xeon-centos76-media-nginx:20.7
+FROM openvisualcloud/xeon-ubuntu1804-media-nginx:20.7
 
-RUN yum install -y -q epel-release && yum install -y -q python36-tornado python36-requests python36-ply python36-pip python36-psutil && rm -rf /var/cache/yum/*
-RUN pip3 install vdms
+RUN apt-get update && apt-get install -y -q --no-install-recommends python3-tornado python3-requests python3-ply python3-pip python3-psutil && rm -rf /var/lib/apt/lists/*
+RUN pip3 install 'protobuf==3.19' vdms
 
+COPY *.py /home/
 COPY    *.conf /etc/nginx/
-COPY    *.py /home/
 COPY    html /var/www/html
-CMD     ["/bin/bash","-c","/home/frontend.py&/usr/local/sbin/nginx"]
+CMD ["/bin/bash","-c","/home/frontend.py&/usr/local/sbin/nginx"]
 EXPOSE  8080
 
 ####
@@ -16,10 +16,11 @@ ARG  GROUP
 ARG  UID
 ARG  GID
 ## must use ; here to ignore user exist status code
-RUN  [ ${GID} -gt 0 ] && groupadd -f -g ${GID} ${GROUP}; \
-     [ ${UID} -gt 0 ] && useradd -d /home/${USER} -g ${GID} -K UID_MAX=${UID} -K UID_MIN=${UID} ${USER}; \
+RUN if [ ${GID} -gt 0 ]; then groupadd -f -g ${GID} ${GROUP}; fi; \
+    if [ ${UID} -gt 0 ]; then useradd -d /home/${USER} -g ${GID} -K UID_MAX=${UID} -K UID_MIN=${UID} ${USER}; fi; \
      touch /var/run/nginx.pid && \
-     mkdir -p /var/log/nginx /var/lib/nginx /var/www/cache /var/www/thumbnail && \
-     chown -R ${UID}.${GID} /var/run/nginx.pid /var/www /var/log/nginx /var/lib/nginx
+     mkdir -p /var/log/nginx /var/lib/nginx /var/www/cache /var/www/gen /var/www/mp4 /var/www/logwatch && \
+     chown -R ${UID}.${GID} /var/run/nginx.pid /var/log/nginx /var/lib/nginx /var/www /etc/nginx/nginx.conf
+VOLUME ["/var/www"]
 USER ${UID}
 ####

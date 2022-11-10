@@ -1,10 +1,13 @@
 #!/bin/bash -e
 
 DIR=$(dirname $(readlink -f "$0"))
+mkdir -p "${DIR}/archive" "${DIR}/log/"
 
-CLIPS=($(cat "$DIR"/streamlist.txt))
+CLIPS=($(cat "${DIR}"/streamlist.txt))
 
-mkdir -p "$DIR/archive"
+# LOGFILE="${DIR}/log/video_storage_local_download_metrics.csv"
+# echo "clip_name,type,Elapsed_time_s,File_size" | tee ${LOGFILE}
+
 for clip in "${CLIPS[@]}"; do
     url=$(echo "$clip" | cut -f1 -d',')
     clip_name=$(echo "$clip" | cut -f2 -d',')
@@ -17,7 +20,12 @@ for clip in "${CLIPS[@]}"; do
             read reply
         fi
         if test "$reply" = "accept"; then
+            # start_time=$(date +%s.%3N)
             wget -U "XXX YYY" -O "$DIR/archive/$clip_mp4" "$url"
+            # end_time=$(date +%s.%3N)
+            # file_size="$(du -h $DIR/archive/$clip_mp4 | cut -f 1)"
+            # total_time=$(echo "$end_time - $start_time" | bc);
+            # echo "${clip_mp4},download video,${total_time},${file_size}" >> ${LOGFILE}
         else
             echo "Skipping..."
         fi

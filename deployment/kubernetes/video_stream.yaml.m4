@@ -49,6 +49,38 @@ spec:
     spec:
       enableServiceLinks: false
       containers:
+        - name: stream
+          image: defn(`REGISTRY_PREFIX')lcc_stream:stream
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+            - containerPort: 8088
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: proxy-config
+          env:
+            - name: KKHOST
+              value: "kafka-service:9092"
+            - name: VDHOST
+              value: "http://video-service:8080"
+            - name: DBHOST
+              value: "vdms-service"
+            - name: ZKHOST
+              value: "zookeeper-service:2181"
+            - name: `STREAM_URL'
+              value: "defn(`STREAM_URL')"
+            - name: NO_PROXY
+              value: "video-service,$(NO_PROXY)"
+            - name: no_proxy
+              value: "video-service,$(no_proxy)"
+          volumeMounts:
+            - mountPath: /etc/localtime
+              name: timezone
+              readOnly: true
+            - mountPath: /var/www/mp4
+              name: stream-content
+              readOnly: false
         - name: video
           image: defn(`REGISTRY_PREFIX')lcc_video:stream
           imagePullPolicy: IfNotPresent
@@ -84,7 +116,7 @@ spec:
               name: stream-content
               readOnly: false
       imagePullSecrets:
-      - name: 
+        - name: 
       volumes:
         - name: timezone
           hostPath:

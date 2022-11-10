@@ -1,4 +1,3 @@
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,13 +7,30 @@ metadata:
 spec:
   ports:
   - port: 55555
+    targetPort: 55555
     protocol: TCP
     name: vdms
   selector:
     app: vdms
-
 ---
-
+# TODO: temporary fix!
+apiVersion: v1
+kind: Service
+metadata:
+  name: vdms-service-nodeport
+  labels:
+    app: vdms
+spec:
+  type: NodePort
+  ports:
+  - port: 55555
+    targetPort: 55555
+    nodePort: 30008
+    protocol: TCP
+    name: vdms
+  selector:
+    app: vdms
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,9 +50,9 @@ spec:
       enableServiceLinks: false
       containers:
         - name: vdms
-          image: intellabs/vdms:base
+          image: intellabs/vdms:latest
           imagePullPolicy: IfNotPresent
-          command: ["/bin/sh","-c","cd /vdms;vdms"]
+          command: ["/bin/sh","-c","cd /vdms/build;./vdms"]
           ports:
             - containerPort: 55555
           volumeMounts:

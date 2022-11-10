@@ -62,4 +62,3 @@ spec:
               value: "-Xmx256m -Xms256m"
             - name: "KAFKA_LOG4J_ROOT_LOGLEVEL"
               value: "ERROR"
-

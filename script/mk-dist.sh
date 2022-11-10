@@ -13,7 +13,7 @@ case "$0" in
         rm -rf "$DIR/../dist"
         if test -e "$YML"; then
             mkdir -p "$DIR/../dist/dist"
-            for image in `awk -v 'labels=*' -f "$DIR/scan-yaml.awk" "$YML"` smtc_certificate:latest; do
+            for image in `awk -v 'labels=*' -f "$DIR/scan-yaml.awk" "$YML"` smtc_certificate:stream; do
                 imagefile=${image//\//-}
                 imagefile=${imagefile//:/-}
                 echo "archiving $image => $imagefile"

@@ -1,9 +1,9 @@
 
     frontend-service:
-        image: defn(`REGISTRY_PREFIX')lcc_frontend:latest
+        image: defn(`REGISTRY_PREFIX')lcc_frontend:stream
         ports:
             - target: 8443
-              published: 443
+              published: 30007
               protocol: tcp
               mode: host
         environment:

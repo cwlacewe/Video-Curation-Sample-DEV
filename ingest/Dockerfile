@@ -37,4 +37,3 @@ COPY openvino_models /opt/openvino_models
 # ingest script
 COPY *.py /home/
 CMD ["/home/ingest.py"]
-

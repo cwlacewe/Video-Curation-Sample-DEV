@@ -23,7 +23,7 @@ class ZKState(object):
 
     def processed(self):
         return self._zk.exists(self._path+"/"+self._name+"complete")
-        
+
     def process_start(self):
         if self.processed(): return False
         try:
