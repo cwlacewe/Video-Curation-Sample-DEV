@@ -5,10 +5,12 @@ $("#pg-home").on(":initpage", function () {
         var control_panel=page.find(".control-panel");
         $.each(data.controls, function (ignored, control) {
             var div=$(".template .control-item").clone();
-            div.find("img").attr("src",control.icon);
-            div.find(".control-text").text(control.description);
-            div.find(".query-cell").data("control", control);
-            control_panel.append(div.children());
+            if (control.icon != ""){
+                div.find("img").attr("src",control.icon);
+                div.find(".control-text").text(control.description);
+                div.find(".query-cell").data("control", control);
+                control_panel.append(div.children());
+            }
         });
 
         /* drag and drop controls to search */
