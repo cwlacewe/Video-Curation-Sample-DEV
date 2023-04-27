@@ -17,11 +17,11 @@ cd $BUILD_DIR
 SOURCE="-DSTREAM_URL="udp://localhost:8088" -DIN_SOURCE=stream"
 
 if [ $REGISTRY == "None" ]; then
-    cmake  $SOURCE -DNCPU=$NCPU ..
+    cmake  $SOURCE -DNCPU=$NCPU -DNCURATIONS=2 -DINGESTION=object ..
 else
     cmake -DREGISTRY=$REGISTRY $SOURCE -DNCPU=$NCPU ..
 fi
-make 
+make
 
 if [ $EXP_TYPE == "compose" ]; then
     make start_docker_compose
