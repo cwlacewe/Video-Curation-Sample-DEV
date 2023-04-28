@@ -4,7 +4,7 @@
         ports:
             - target: 8088
               published: 8088
-              protocol: udp
+              protocol: tcp
               mode: host
         environment:
             KKHOST: "kafka-service:9092"

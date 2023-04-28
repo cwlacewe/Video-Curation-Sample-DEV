@@ -34,9 +34,9 @@ endif()
 
 if (NOT DEFINED STREAM_URL)
     set(STREAM_URL "${EMPTY}") # Use videos
-    if (IN_SOURCE MATCHES "stream")
-        set(IN_SOURCE "videos")
-    endif()
+    # if (IN_SOURCE MATCHES "stream")
+    #     set(IN_SOURCE "videos")
+    # endif()
 endif()
 
 

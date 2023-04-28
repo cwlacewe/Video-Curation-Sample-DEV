@@ -25,8 +25,8 @@ spec:
   - port: 8088
     targetPort: 8088
     nodePort: 30009
-    protocol: UDP
-    name: udp
+    protocol: TCP
+    name: tcp
   selector:
     app: video
 ---
@@ -55,7 +55,7 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 8088
-              protocol: UDP
+              protocol: tcp
           envFrom:
             - configMapRef:
                 name: proxy-config
@@ -116,7 +116,7 @@ spec:
               name: stream-content
               readOnly: false
       imagePullSecrets:
-        - name: 
+        - name:
       volumes:
         - name: timezone
           hostPath:

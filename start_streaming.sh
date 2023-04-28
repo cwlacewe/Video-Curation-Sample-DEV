@@ -14,7 +14,7 @@ fi
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 
-SOURCE="-DSTREAM_URL="udp://localhost:8088" -DIN_SOURCE=stream"
+SOURCE="-DIN_SOURCE=stream"
 
 if [ $REGISTRY == "None" ]; then
     cmake  $SOURCE -DNCPU=$NCPU -DNCURATIONS=2 -DINGESTION=object ..

@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q --no-
 COPY *.conf /etc/nginx/
 RUN mkdir -p /var/www/mp4 /var/www/streams
 COPY manage.sh /home/
-CMD ["/bin/bash","-c","/home/manage.sh"]
+# CMD ["/bin/bash","-c","/home/manage.sh"]
 
 ####
 ARG  USER
