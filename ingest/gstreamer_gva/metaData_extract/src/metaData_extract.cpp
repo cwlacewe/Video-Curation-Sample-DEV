@@ -206,7 +206,7 @@ void DrawObjects(std::vector<DetectionObject> &objects, cv::Mat &frame, VDMSConv
                 bbox.y = object.ymin;
                 bbox.w = object.xmax - object.xmin;
                 bbox.h = object.ymax - object.ymin;
-                bbox.props[VDMS_FRAMEID] = frameID;
+                bbox.props["video_name"] = video_id;
                 if(converter->upload_data(bbox, frameID, video_id, streamVid) != 0)
                 {
                     std::cout << "Upload Failed" << std::endl;
@@ -297,6 +297,7 @@ static GstPadProbeReturn pad_probe_callback_face(GstPad *pad, GstPadProbeInfo *i
                 bbox.y = meta.y;
                 bbox.w = meta.w;
                 bbox.h = meta.h;
+                bbox.props["video_name"] = args->video_id;
                 if(converter->upload_data(bbox, frameID[0], args->video_id, args->streamVid) != 0)
                     std::cout << "Upload Failed" << std::endl;
             }
@@ -463,6 +464,7 @@ int main(int argc, char *argv[]) {
     gchar const *device = "CPU";
     gchar const *model_precision = "FP32";
     gint batch_size = 1;
+    gint frame_interval = 1;
     gdouble threshold = 0.7;
     gboolean no_display = FALSE;
     int frameID = 0;
@@ -559,9 +561,9 @@ int main(int argc, char *argv[]) {
                             : "autovideosink";
 
         gchar* launch_str = g_strdup_printf("filesrc location=%s ! %s ! capsfilter caps=\"%s\" ! "
-                            "gvainference name=gvadetect model=%s device=%s batch-size=%d ! queue ! "
+                            "gvainference name=gvadetect model=%s device=%s batch-size=%d inference-interval=%d ! queue ! "
                             "videoconvert n-threads=4 ! %s ",
-                            input_file, preprocess_pipeline, capfilter, detection_model, device, batch_size, sink);
+                            input_file, preprocess_pipeline, capfilter, detection_model, device, batch_size, frame_interval, sink);
 
         g_print("PIPELINE: %s \n", launch_str);
         pipeline = gst_parse_launch(launch_str, NULL);
@@ -579,12 +581,12 @@ int main(int argc, char *argv[]) {
                             : "autovideosink";
 
         gchar* launch_str = g_strdup_printf("filesrc location=%s ! %s ! capsfilter caps=\"%s\" ! "
-                                          "gvadetect model=%s device=%s batch-size=%d ! queue ! "
+                                          "gvadetect model=%s device=%s batch-size=%d inference-interval=%d ! queue ! "
                                           "gvaclassify  model=%s device=%s batch-size=%d ! queue ! "
                                           "gvaclassify  model=%s device=%s batch-size=%d ! queue ! "
                                           "gvawatermark name=gvawatermark ! videoconvert n-threads=4 ! %s",
                                           input_file, preprocess_pipeline, capfilter,
-                                          detection_model, device, batch_size,
+                                          detection_model, device, batch_size, frame_interval,
                                           classification_model_1, device, batch_size,
                                           classification_model_2, device, batch_size, sink);
         // }

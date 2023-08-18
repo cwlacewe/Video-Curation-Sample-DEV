@@ -28,8 +28,8 @@ function draw_analytics(video, data) {
                     var sx=svg.width()/data.width;
                     var sy=svg.height()/data.height;
                     var sxy=Math.min(sx,sy);
-                    var sw=sx*data.width;
-                    var sh=sy*data.height;
+                    var sw=sxy*data.width;
+                    var sh=sxy*data.height;
                     var sxoff=(svg.width()-sw)/2;
                     var syoff=(svg.height()-sh)/2;
                     $.each(v.objects, function (ignored, v1) {

@@ -27,13 +27,13 @@ env.Append(
     ],
     LIBPATH = [
         "/usr/lib/x86_64-linux-gnu",
+        "/usr/local/lib/gstreamer-1.0",
         "/usr/local/lib",
         "/usr/lib",
         "/opt/vdms_converter",
         GST_GVA_PLUGIN_ROOT_PATH + "/build/intel64/Release/lib",
         VDMS_ROOT_PATH + "/utils",
         VDMS_ROOT_PATH + "/client/cpp",
-	"/usr/local/lib/x86_64-linux-gnu/gstreamer-1.0"
     ],
     LIBS = [
         "vdms_converter",
@@ -58,6 +58,5 @@ env.Append(
     ]
 )
 
-#        "cpu_extension",
 
 env.Program("metaData_extract", source_files)

@@ -62,12 +62,12 @@ spec:
           env:
             - name: KKHOST
               value: "kafka-service:9092"
+            - name: ZKHOST
+              value: "zookeeper-service:2181"
             - name: VDHOST
               value: "http://video-service:8080"
             - name: DBHOST
               value: "vdms-service"
-            - name: ZKHOST
-              value: "zookeeper-service:2181"
             - name: `STREAM_URL'
               value: "defn(`STREAM_URL')"
             - name: NO_PROXY
@@ -96,10 +96,10 @@ spec:
               value: "10m"
             - name: KKHOST
               value: "kafka-service:9092"
-            - name: SHOST
-              value: "http://stream-service:8080"
             - name: ZKHOST
               value: "zookeeper-service:2181"
+            - name: SHOST
+              value: "http://stream-service:8080"
             - name: `INGESTION'
               value: "defn(`INGESTION')"
             - name: `IN_SOURCE'
@@ -116,7 +116,7 @@ spec:
               name: stream-content
               readOnly: false
       imagePullSecrets:
-        - name: 
+        - name:
       volumes:
         - name: timezone
           hostPath:

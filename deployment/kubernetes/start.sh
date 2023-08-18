@@ -1,7 +1,13 @@
 #!/bin/bash -e
 
 DIR=$(dirname $(readlink -f "$0"))
-IN_SOURCE=$5
+PLATFORM="${1:-Xeon}"
+NCURATIONS="$2"
+INGESTION="$3"
+IN_SOURCE="$4"
+STREAM_URL="$5"
+NCPU="$6"
+REGISTRY="$7"
 
 shift
 . "$DIR/build.sh"
@@ -33,10 +39,4 @@ for yaml in $(find "$DIR" -maxdepth 1 -name "*.yaml" -print); do
         kubectl apply -f "$yaml"
     fi
 done
-# kubectl apply -f $DIR/zookeeper.yaml
-# kubectl apply -f $DIR/kafka.yaml
-# kubectl apply -f $DIR/vdms.yaml
-# kubectl apply -f $DIR/video.yaml
-# kubectl apply -f $DIR/frontend.yaml
-# kubectl rollout status deploy/frontend --timeout=360s
 

@@ -24,3 +24,7 @@ docker_compose)
     done
     ;;
 esac
+
+docker container prune -f; echo
+docker volume prune -f; echo
+docker network prune -f; echo

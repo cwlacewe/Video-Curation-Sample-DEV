@@ -9,7 +9,7 @@ env = Environment(
         "/usr/include",
         "/usr/include/jsoncpp",
         "/usr/local/include/opencv4",
-	VDMS_ROOT_PATH,
+	    VDMS_ROOT_PATH,
         VDMS_ROOT_PATH + "/client/cpp",
         VDMS_ROOT_PATH + "/utils/include",
     ],

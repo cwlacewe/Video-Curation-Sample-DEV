@@ -1,8 +1,8 @@
 
-FROM openvisualcloud/xeon-ubuntu1804-analytics-dev:20.7 as build
+FROM openvisualcloud/xeon-ubuntu1804-analytics-dev:21.3 as build
 ENV PYTHONPATH=
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q libgoogle-glog-dev libgflags-dev libgtest-dev libjsoncpp-dev cmake git scons libprotobuf-dev protobuf-compiler
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q build-essential libgoogle-glog-dev libgflags-dev libgtest-dev libjsoncpp-dev cmake git scons libprotobuf-dev protobuf-compiler
 
 # build gtest
 RUN cd /usr/src/gtest && cmake . && make -j$(nproc) && mv libgtest* /usr/lib
@@ -17,13 +17,17 @@ RUN cd /opt/vdms_converter && scons -j$(nproc)
 
 # metaData_extract
 COPY gstreamer_gva /opt/gstreamer_gva
-RUN cd /opt/gstreamer_gva && scons --metaData -Q VDMS_ROOT_PATH=/opt/vdms/ GST_GVA_PLUGIN_ROOT_PATH=/usr/local/lib/x86_64-linux-gnu/gstreamer-1.0
+RUN cd /opt/gstreamer_gva && scons --metaData -Q VDMS_ROOT_PATH=/opt/vdms/ GST_GVA_PLUGIN_ROOT_PATH=/usr/local/lib/gstreamer-1.0
 
 # final image
-FROM openvisualcloud/xeon-ubuntu1804-analytics-gst:20.7
+FROM openvisualcloud/xeon-ubuntu1804-analytics-gst:21.3
+ENV LD_LIBRARY_PATH /usr/local/lib:${LD_LIBRARY_PATH}
 
 # prerequisite
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q libjsoncpp1 python3-pip wget libdc1394-22 libprotobuf10 && rm -rf /var/lib/apt/lists/* && pip3 install 'kafka-python>=1.4.7' 'kazoo>=2.6.1'
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get install -y -q libjsoncpp1 python3-pip wget libdc1394-22 libprotobuf10 && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip3 install 'kafka-python>=1.4.7' 'kazoo>=2.6.1' psutil
 
 COPY --from=build /opt/vdms_converter/libvdms_converter.so /usr/local/lib/libvdms_converter.so
 COPY --from=build /opt/vdms/client/cpp/libvdms-client.so /usr/local/lib/libvdms-client.so

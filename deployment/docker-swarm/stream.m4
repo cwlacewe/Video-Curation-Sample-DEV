@@ -3,7 +3,7 @@
         image: defn(`REGISTRY_PREFIX')lcc_stream:stream
         ports:
             - target: 8088
-              published: 8088
+              published: 30009
               protocol: udp
               mode: host
         environment:

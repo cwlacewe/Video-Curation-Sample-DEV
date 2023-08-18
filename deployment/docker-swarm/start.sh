@@ -3,8 +3,6 @@
 DIR=$(dirname $(readlink -f "$0"))
 yml="$DIR/docker-compose.yml"
 
-export USER_ID="$(id -u)"
-export GROUP_ID="$(id -g)"
 case "$1" in
 docker_compose)
     dcv="$(docker-compose --version | cut -f3 -d' ' | cut -f1 -d',')"
@@ -22,13 +20,11 @@ docker_compose)
     docker volume prune -f; echo
     docker network prune -f; echo
 
-    "$DIR/../certificate/self-sign.sh"
     shift
     . "$DIR/build.sh"
     docker-compose -f "$yml" -p lcc --compatibility up
     ;;
 *)
-    "$DIR/../certificate/self-sign.sh"
     shift
     . "$DIR/build.sh"
     docker stack deploy -c "$yml" lcc
