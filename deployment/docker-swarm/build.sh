@@ -1,13 +1,15 @@
 #!/bin/bash -e
 
 DIR=$(dirname $(readlink -f "$0"))
-NCURATIONS=${2:-1}
+PLATFORM="${1:-Xeon}"
+NCURATIONS="$2"
 INGESTION="$3"
 IN_SOURCE="$4"
 STREAM_URL="$5"
-NCPU=$6 
+NCPU="$6"
 REGISTRY="$7"
 
+echo "Generating templates with PLATFORM=${PLATFORM},NCURATIONS=${NCURATIONS},INGESTION=${INGESTION},IN_SOURCE=${IN_SOURCE},STREAM_URL=${STREAM_URL},NCPU=${NCPU},HOSTIP=${HOSTIP}"
 if [[ $IN_SOURCE == *"videos"* ]]; then
     if test -f "${DIR}/docker-compose.yml.m4"; then
         echo "Generating docker-compose.yml"

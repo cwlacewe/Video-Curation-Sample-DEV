@@ -1,4 +1,4 @@
-FROM openvisualcloud/xeon-ubuntu1804-media-nginx:20.7
+FROM openvisualcloud/xeon-ubuntu2004-media-nginx:23.1
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -q --no-install-recommends ffmpeg inotify-tools && rm -rf /var/lib/apt/lists/*
 

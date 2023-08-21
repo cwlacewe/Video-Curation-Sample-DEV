@@ -13,24 +13,6 @@ spec:
     app: video
 ---
 # TODO: temporary fix!
-apiVersion: v1
-kind: Service
-metadata:
-  name: video-service-nodeport
-  labels:
-    app: video
-spec:
-  type: NodePort
-  ports:
-  - port: 8088
-    targetPort: 8088
-    nodePort: 30009
-    protocol: UDP
-    name: udp
-  selector:
-    app: video
----
-# Should be a POD not deployment.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,8 +46,6 @@ spec:
               value: "10m"
             - name: KKHOST
               value: "kafka-service:9092"
-            - name: SHOST
-              value: "http://stream-service:8080"
             - name: ZKHOST
               value: "zookeeper-service:2181"
             - name: `INGESTION'
@@ -80,15 +60,10 @@ spec:
             - mountPath: /etc/localtime
               name: timezone
               readOnly: true
-            - mountPath: /var/www/streams
-              name: stream-content
-              readOnly: false
       imagePullSecrets:
-      - name: 
+        - name:
       volumes:
         - name: timezone
           hostPath:
             path: /etc/localtime
             type: File
-        - name: stream-content
-          emptyDir: {}

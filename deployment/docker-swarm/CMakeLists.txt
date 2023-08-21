@@ -7,3 +7,5 @@ if (NOT PLATFORM STREQUAL "VCAC-A")
     include("${CMAKE_SOURCE_DIR}/script/service.cmake")
     include("${CMAKE_SOURCE_DIR}/script/deployment.cmake")
 endif()
+
+add_dependencies(start_${service} sign_certificate)

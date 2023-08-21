@@ -11,19 +11,19 @@
             VDHOST: "http://video-service:8080"
             no_proxy: "video-service,${no_proxy}"
             NO_PROXY: "video-service,${NO_PROXY}"
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
         secrets:
             - source: self_crt
-              target: self.crt
+              target: /var/run/secrets/self.crt
               uid: ${USER_ID}
               gid: ${GROUP_ID}
               mode: 0444
             - source: self_key
-              target: self.key
+              target: /var/run/secrets/self.key
               uid: ${USER_ID}
               gid: ${GROUP_ID}
               mode: 0440
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
         networks:
             - appnet
         restart: always

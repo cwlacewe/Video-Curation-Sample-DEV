@@ -22,6 +22,7 @@ class SegmentHandler(web.RequestHandler):
         output=video.replace(".mp4","-"+start+".mp4")
         if not os.path.exists(self._genpath+"/"+output):
             call(["/usr/local/bin/ffmpeg","-ss",start,"-i",self._mp4path+"/"+video,"-to",end,"-c","copy",self._genpath+"/"+output])
+            # call(["/usr/local/bin/ffmpeg","-i",self._mp4path+"/"+video,"-ss",start,"-t",end,"-c","copy",self._genpath+"/"+output])
         return output
 
     def _format(self, time):
