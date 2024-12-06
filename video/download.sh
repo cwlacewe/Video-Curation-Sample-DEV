@@ -17,7 +17,8 @@ for clip in "${CLIPS[@]}"; do
     if test ! -f "$DIR/archive/$clip_mp4"; then
         if test "$reply" = ""; then
             printf "\n\n\nThe Library Curation sample requires a set of videos for curation. Please accept downloading dataset for library curation:\n\nDataset: $url\nLicense: $license\n\nThe terms and conditions of the data set license apply. Intel does not grant any rights to the data files.\n\n\nPlease type \"accept\" or anything else to skip the download.\n"
-            read reply
+            # read reply
+            reply="accept"
         fi
         if test "$reply" = "accept"; then
             # start_time=$(date +%s.%3N)

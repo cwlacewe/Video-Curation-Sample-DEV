@@ -6,14 +6,15 @@
             CLEANUP_INTERVAL: "10m"
             KKHOST: "kafka-service:9092"
             ZKHOST: "zookeeper-service:2181"
+            DBHOST: "vdms-service"
             `INGESTION': "defn(`INGESTION')"
             `IN_SOURCE': "defn(`IN_SOURCE')"
             http_proxy: "${http_proxy}"
             HTTP_PROXY: "${HTTP_PROXY}"
             https_proxy: "${https_proxy}"
             HTTPS_PROXY: "${HTTPS_PROXY}"
-            no_proxy: "${no_proxy}"
-            NO_PROXY: "${NO_PROXY}"
+            no_proxy: "vdms-service,${no_proxy}"
+            NO_PROXY: "vdms-service,${NO_PROXY}"
         volumes:
             - /etc/localtime:/etc/localtime:ro
         networks:

@@ -1,7 +1,6 @@
 
     vdms-service:
         image: intellabs/vdms:latest
-        command: ["/bin/sh","-c","cd /vdms/build;./vdms"]
         ports:
             - target: 55555
               published: 55555
